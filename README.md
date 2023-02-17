@@ -9,6 +9,7 @@ Following modifications differ from the author's starting point:
 |Build tool|Vue CLI|**Vite**|
 |Vue JS|v2|**v3**|
 |Vuetify|v2|**v3**|
+|APIs|Options Api|Composition API| 
 
 ---
 
