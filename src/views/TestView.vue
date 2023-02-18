@@ -5,13 +5,7 @@ const doneTask = (id) => {
 
 
   const foundIndex = tasks.findIndex( (task, index) => task.id === id) 
-  
-  //tasks[foundIndex].done = !tasks[foundIndex].done
-
-  
-  
-  
-
+ 
 }
 
 const tasks = [
@@ -39,27 +33,7 @@ const item = ref(1)
 </script>
 
 <template>
-  <div>
-    <v-list select-strategy="multiple" class="pt-0">
-      <div v-for="task in tasks" :key="task.id">
-
-        <v-list-item
-          @click="doneTask(task.id)"
-        >
-          <template v-slot:prepend>
-            <v-list-item-action start>
-              <v-checkbox-btn :model-value="task.done"></v-checkbox-btn>
-            </v-list-item-action>
-          </template>
-
-          <v-list-item-title>{{ task.title }}</v-list-item-title>
-
-        </v-list-item>
-        <v-divider></v-divider>
-      </div>
-
-    </v-list>
-
+ <div>
     <v-list>
 
       <v-list-item :isActive="true" :toggle="false">
