@@ -1,12 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 
-const doneTask = (id) => {
-
-
-  const foundIndex = tasks.findIndex( (task, index) => task.id === id) 
- 
-}
 
 const tasks = [
   {
@@ -24,58 +18,38 @@ const tasks = [
     title: "Go to sleep",
     done: false
   },
-]
+];
 
-const testModel = ref()
-
-const item = ref(1)
+const model = [1,2];
 
 </script>
 
 <template>
- <div>
+  <div>
     <v-list>
-
-      <v-list-item :isActive="true" :toggle="false">
-        <v-list-item-content>
-          List element one
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list-item :active="true" :toggle="true">
-        <v-list-item-content>
-          List element two
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list-item :value="item">
-          <!-- <template v-slot:default="{ active }"> -->
-            <v-list-item-action>
-              <v-checkbox :input-value="active"></v-checkbox>
-            </v-list-item-action>
-
-            <v-list-item-content>
-              <v-list-item-title>Notifications</v-list-item-title>
-              <v-list-item-subtitle>Notify me about updates to apps or games that I downloaded</v-list-item-subtitle>
-            </v-list-item-content>
-          <!-- </template> -->
-        </v-list-item>
-
-
+      <v-list-group v-model="model" multiple>
+        <template v-slot:activator="{ isOpen, props }">
+          <div v-for="(task, i) in tasks" :key="i">
+            <pre>
+              {{ model }}
+            </pre>
+            <pre>
+                {{ props }}
+                {{ isOpen }}
+            </pre>
+            <v-list-item v-bind="props" active-class="deep-purple--text text--accent-4">
+              <template #default="{ isActive, isSelected }">
+                <v-list-item-action start>
+                  <v-checkbox-btn :model-value="isActive"></v-checkbox-btn>
+                </v-list-item-action>
+                <v-list-item-title> {{ task.title }}</v-list-item-title>
+                Is active {{ isActive }} , is selected {{ isSelected }}
+              </template>
+            </v-list-item>
+          </div>
+        </template>
+      </v-list-group>
     </v-list>
 
-    <v-text-field
-      v-model="testModel"
-      clearable
-      hide-details="auto"
-      label="Last name"
-    ></v-text-field>
-
-
-    <v-list>
-      <v-list-item v-for="task in tasks" :key="task.id" :value="task">
-          Hello
-      </v-list-item>
-    </v-list>
   </div>
 </template>
