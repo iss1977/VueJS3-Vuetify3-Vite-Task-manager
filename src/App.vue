@@ -79,7 +79,7 @@ const drawer = ref(false);
 const items =  [
           { title: 'Todo', icon: 'mdi-checkbox-marked-circle-plus-outline', to:'/' },
           { title: 'About', icon: 'mdi-information-variant', to: '/about' },
-          { title: 'Test', icon: 'mdi-information-variant', to: '/test' },
+   
       ];
 
 

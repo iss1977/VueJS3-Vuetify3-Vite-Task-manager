@@ -1,41 +1,21 @@
 <script setup>
 import { ref, computed, reactive } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const addTask = () => {
-  if (!newTaskTitle.value) return;
-  
-  const newTask = reactive({
-    id: Date.now(),
-    title: newTaskTitle.value,
-    done: false,
-  })
-  tasks.value.push(newTask);
+  store.dispatch('addTask', newTaskTitle.value);
   newTaskTitle.value='';
 }
 
 const deleteTask = (id) => {
-  tasks.value = tasks.value.filter( (task, index) => task.id !== id) 
+  store.dispatch('deleteTask', id);
 }
 
 const newTaskTitle = ref('');
 
-const tasks = ref([
-  // {
-  //   id: 1,
-  //   title: "Wake up",
-  //   done: false
-  // },
-  // {
-  //   id: 2,
-  //   title: "Eat",
-  //   done: true
-  // },
-  // {
-  //   id: 3,
-  //   title: "Go to sleep",
-  //   done: false
-  // },
-]);
+const tasks = computed( () => store.state.tasks);
 
 </script>
 
@@ -54,7 +34,7 @@ const tasks = ref([
         @keyup.enter="addTask"
       ></v-text-field>
     </v-row>
-    
+
     <v-list select-strategy="multiple" class="pt-0" v-if="tasks.length">
       <div v-for="(task,i) in tasks" :key="task.id">
 
