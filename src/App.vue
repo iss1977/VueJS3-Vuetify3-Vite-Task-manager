@@ -50,7 +50,6 @@
 
         <v-app-bar-title>Todo App</v-app-bar-title>
 
-        <v-spacer></v-spacer>
 
         <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
