@@ -2,6 +2,8 @@
 import { ref, computed, reactive } from 'vue';
 
 const addTask = () => {
+  if (!newTaskTitle.value) return;
+  
   const newTask = reactive({
     id: Date.now(),
     title: newTaskTitle.value,
@@ -41,7 +43,7 @@ const tasks = ref([
   <div>
     <v-row>
       <v-text-field
-        class="pt-6 mx-6 my-4"
+        class="py-4 mx-6 my-4"
         label="Add task"
         append-inner-icon="mdi-plus"
         variant="outlined"
@@ -53,7 +55,7 @@ const tasks = ref([
       ></v-text-field>
     </v-row>
     
-    <v-list select-strategy="multiple" class="pt-0">
+    <v-list select-strategy="multiple" class="pt-0" v-if="tasks.length">
       <div v-for="(task,i) in tasks" :key="task.id">
 
         <v-list-item 
@@ -82,5 +84,18 @@ const tasks = ref([
         <v-divider></v-divider>
       </div>
     </v-list>
+    <div v-else
+      class="text-center my-6"
+    >
+      <v-icon
+      size="x-large"
+      color="primary"
+    >
+      mdi-email
+    </v-icon>
+      <div class="text-body-1  text-primary">
+        No tasks
+      </div> 
+    </div>
 </div>
 </template>
