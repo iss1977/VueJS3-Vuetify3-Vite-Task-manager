@@ -34,6 +34,12 @@ export const store = createStore({
     },
     deleteTask(state, id) {
       state.tasks = state.tasks.filter( (task) => task.id !== id)
+    },
+    doneTask(state,{id,done}){
+      const found = state.tasks.find( (el) => el.id === id);
+      if (found){
+        found.done = done;
+      }
     }
     
   },
@@ -43,6 +49,9 @@ export const store = createStore({
     },
     deleteTask({ commit }, id) {
       commit('deleteTask', id)
+    },
+    doneTask( { commit }, { id, done }){
+      commit( 'doneTask', {id, done} )
     }
 
   },
