@@ -36,11 +36,11 @@
       <v-app-bar
         density="prominent"
         color="primary"
-        image="truck.jpg"
+       
       >
         <template v-slot:image>
           <v-img
-            gradient="to top right, rgba(19,84,122,.8), rgba(128,208,199,.8)"
+            gradient="to top right, rgba(19,84,122,.4), rgba(128,208,199,.4)"
           ></v-img>
         </template>
 
@@ -50,7 +50,6 @@
 
         <v-app-bar-title>Todo App</v-app-bar-title>
 
-        <v-spacer></v-spacer>
 
         <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
@@ -80,6 +79,7 @@ const drawer = ref(false);
 const items =  [
           { title: 'Todo', icon: 'mdi-checkbox-marked-circle-plus-outline', to:'/' },
           { title: 'About', icon: 'mdi-information-variant', to: '/about' },
+   
       ];
 
 
