@@ -9,15 +9,18 @@
     <v-list-item-title :class="{ 'text-decoration-line-through': task.done }">{{ task.title }}</v-list-item-title>
 
     <template v-slot:append>
-      <v-btn @click.stop="deleteTask(task.id)" color="primary lighten-1" icon="mdi-delete" variant="text"></v-btn>
+      <v-btn @click.stop="dialogs.delete = true" color="primary lighten-1" icon="mdi-delete" variant="text"></v-btn>
     </template>
-
+{{ dialogs.delete  }}
   </v-list-item>
+
+  <DialogDelete v-bind:dialog-active="dialogs.delete" @dialog-action-yes-or-no="deleteDialogAction"/>
 </template>
 
 <script setup>
-
+import DialogDelete from '@/components/todo/dialogs/DialogDelete.vue';
 import { useStore } from "vuex";
+import { reactive } from 'vue';
 
 const store = useStore();
 
@@ -32,5 +35,17 @@ const deleteTask = (id) => {
 const doneTask = (id, done) => {
   store.dispatch('doneTask', { id, done })
 }
+
+// confirmation modals - open/close
+const dialogs = reactive({
+  delete: false,
+});
+
+const deleteDialogAction = (yesOoNo) =>  {
+  dialogs.delete = false // close modal
+  if (yesOoNo === 'yes'){
+    deleteTask(task.id);
+  }
+};
 
 </script>

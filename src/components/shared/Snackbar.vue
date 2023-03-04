@@ -1,10 +1,9 @@
 <template>
-  <v-snackbar v-model="$store.state.snackbar.show" :timeout="snackbarTimeut" color="white" variant="outlined">
+  <v-snackbar v-model="$store.state.snackbar.show" :timeout="snackbarTimeut">
     {{ snackbarText }}
-    <template v-slot:actions = "{ attrs }">
+    <template v-slot:actions>
       <v-btn
-        v-bind="attrs"
-        color="primary"
+        color="white"
         variant="text"
         @click="hideSnackbar"
       >
