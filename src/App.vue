@@ -67,10 +67,13 @@
     <v-main>
       <router-view></router-view>
     </v-main>
+    <Snackbar />
   </v-app>
 </template>
 
 <script setup>
+import Snackbar from '@/components/shared/Snackbar.vue';
+
 
 import { ref } from 'vue';
 
