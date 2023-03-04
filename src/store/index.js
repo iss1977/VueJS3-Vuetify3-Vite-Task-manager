@@ -20,6 +20,11 @@ export const store = createStore({
         done: false
       },
     ],
+    snackbar: {
+      show: false,
+      text: '',
+      timeout: 30000,
+    },
   },
   mutations: {
     addTask ( state, newTaskTitle)  {
@@ -40,24 +45,43 @@ export const store = createStore({
       if (found){
         found.done = done;
       }
+    },
+    // Snackbar
+    showSnackbar(state, message){
+      state.snackbar.text = message;
+      state.snackbar.show = true;
+      state.snackbar.timeout= state.snackbar.timeout+1; // reset timer
+    },
+    hideSnackbar(state){
+      state.snackbar.show = false;
     }
     
   },
   actions: {
     addTask ({ commit }, newTitle)  {
       commit('addTask', newTitle);
+      commit('showSnackbar', `Task \"${ newTitle }\" added.`)
     },
     deleteTask({ commit }, id) {
       commit('deleteTask', id)
+      commit('showSnackbar', `Task deleted.`)
     },
     doneTask( { commit }, { id, done }){
       commit( 'doneTask', {id, done} )
+    },
+    hideSnackbar( {commit} ){
+      commit('hideSnackbar');
     }
 
   },
 
   getters: {
-
+    snackbarText(state){
+      return state.snackbar.text
+    },
+    snackbarTimeout(state){
+      return state.snackbar.timeout
+    }
   }
 })
 
