@@ -13,3 +13,5 @@ Following modifications differ from the author's starting point:
 
 ---
 
+- List Components umgreschrieben.
+- Dialogs wurde umgreschrieben.
