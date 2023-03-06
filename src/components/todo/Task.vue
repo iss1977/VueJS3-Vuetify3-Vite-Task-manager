@@ -8,34 +8,47 @@
 
     <v-list-item-title :class="{ 'text-decoration-line-through': task.done }">{{ task.title }}</v-list-item-title>
 
-    <template v-slot:append>
-      <!-- <v-btn @click.stop="dialogs.delete = true" color="primary lighten-1" icon="mdi-delete" variant="text"></v-btn> -->
-      <TaskMenu
-        v-bind:task="task"
-        v-on:deleteTask="dialogs.delete = true"
-        v-on:editTask="dialogs.edit = true"
-      />
+    <template v-slot:append >
+      <span @click.stop class="d-flex align-center">
+        <v-icon  icon="mdi-playlist-edit" v-if="task.dueDate"  class="mr-2 text-grey-darken-3 " size="small"></v-icon>
+        <span class="text-caption text-grey-darken-3" > {{ dateFormated }}</span>
+        <TaskMenu
+          v-bind:task="task"
+          v-on:deleteTask="dialogs.delete = true"
+          v-on:editTask="dialogs.edit = true"
+          v-on:editDueDate="dialogs.dueDate = true"
+        />
+      </span>
     </template>
   </v-list-item>
 
   <DialogDelete v-bind:dialog-active="dialogs.delete" @dialog-action-yes-or-no="deleteDialogAction"/>
   <DialogEdit v-bind:dialog-active="dialogs.edit" v-bind:task="task" @dialog-action-save-or-not="editDialogAction"/>
+  <DialogDueDate v-bind:dialog-active="dialogs.dueDate" v-bind:date-to-edit="task.dueDate" @dialog-action-select-or-cancel="editDueDateDialogAction"/>
 </template>
 
 <script setup>
 import DialogDelete from '@/components/todo/dialogs/DialogDelete.vue';
 import DialogEdit from '@/components/todo/dialogs/DialogEdit.vue';
+import DialogDueDate from '@/components/todo/dialogs/DialogDueDate.vue';
+
 import TaskMenu from './TaskMenu.vue';
+import { format, parseISO } from 'date-fns';
 
 import { useStore } from "vuex";
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
+
+import { toISOStringWithTimezone } from '@/util/helpers.js';
 
 const store = useStore();
 
 const props = defineProps(['task']);
-
 const task = props.task
 
+const dateFormated = computed( () => task.dueDate ? format(parseISO(task.dueDate), "dd-MM-yyyy") : null);
+console.log(dateFormated.value);
+
+// store actions
 const deleteTask = (id) => {
   store.dispatch('deleteTask', id);
 }
@@ -48,10 +61,15 @@ const saveTask = (taskPayload) => {
   store.dispatch('saveTask', taskPayload)
 }
 
-// confirmation modals - open/close
+const setDueDateOfTask = (localeDateLikeISOString) => {
+  store.dispatch('setDueDateOfTask', {id: task.id, localeDateLikeISOString} )
+}
+
+// modals - controls witch dialogs are opened
 const dialogs = reactive({
   edit: false,
   delete: false,
+  dueDate: false,
 });
 
 const deleteDialogAction = (yesOoNo) =>  {
@@ -67,5 +85,14 @@ const editDialogAction = (saveOrNot, editedTask) => {
     saveTask(editedTask);
   }
 }
+
+const editDueDateDialogAction = (dialogActionSelectOrCancel, LocalDateAsNumber) => {
+  dialogs.dueDate = false;
+  if (dialogActionSelectOrCancel === 'select') {
+    const localeDateLikeISOString = toISOStringWithTimezone(LocalDateAsNumber)
+    setDueDateOfTask(localeDateLikeISOString);
+  }
+}
+
 
 </script>
