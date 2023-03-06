@@ -29,7 +29,7 @@
 <script setup>
 import { ref } from 'vue';
 
-const props = defineProps(['dialog-active']);
+const props = defineProps(['dialog-active']); // v-model for dialog (dialogActive)
 const emit = defineEmits({
   dialogActionYesOrNo(payload){
     console.log('payload', payload)
@@ -38,10 +38,10 @@ const emit = defineEmits({
 });
   
 
-const  dialogActive2  = ref(props.dialogActive);
+//const  dialogActive2  = ref(props.dialogActive);
 
 const closeDialog = ( deleteNoOrYes ) => {
-  dialogActive2.value = false
+//  dialogActive2.value = false
   emit('dialogActionYesOrNo', deleteNoOrYes);
 }
 

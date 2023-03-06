@@ -23,7 +23,7 @@ export const store = createStore({
     snackbar: {
       show: false,
       text: '',
-      timeout: 30000,
+      timeout: 3000,
     },
   },
   mutations: {
@@ -36,6 +36,10 @@ export const store = createStore({
         done: false,
       }
       state.tasks.push(newTask);
+    },
+    saveTask(state, newTask){
+      const task =  state.tasks.filter( (task) => task.id === newTask.id)[0];
+      Object.assign(task,newTask);
     },
     deleteTask(state, id) {
       state.tasks = state.tasks.filter( (task) => task.id !== id)
@@ -61,6 +65,10 @@ export const store = createStore({
     addTask ({ commit }, newTitle)  {
       commit('addTask', newTitle);
       commit('showSnackbar', `Task \"${ newTitle }\" added.`)
+    },
+    saveTask( { commit }, newTask){
+      commit('saveTask', newTask);
+      commit('showSnackbar', `Task \"${ newTask.title }\" saved.`)
     },
     deleteTask({ commit }, id) {
       commit('deleteTask', id)

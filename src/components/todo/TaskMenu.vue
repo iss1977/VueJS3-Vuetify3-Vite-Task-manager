@@ -12,7 +12,6 @@
       </v-btn>
     </template>
 
-    {{ task.title }}
     <v-list density="compact">
       <v-list-item
         v-for="(item, i) in items"
@@ -38,11 +37,15 @@ const emit = defineEmits({
   deleteTask(){
     console.log('emit delete task')
     return true; //validation pass
-  }
+  },
+  editTask(){
+    console.log('emit edit  task')
+    return true; //validation pass
+  },
 })
 
 const items = [
-        { title: 'Edit', icon: 'mdi-playlist-edit', click: () => console.log('Edit') },
+        { title: 'Edit', icon: 'mdi-playlist-edit', click: () => emit('editTask') },
         { title: 'Due date', icon: 'mdi-clipboard-text-clock-outline', click: () => console.log('Date') },
         { title: 'Delete', icon: 'mdi-delete', click: () =>  emit('deleteTask') },
       ]

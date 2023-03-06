@@ -13,5 +13,14 @@ Following modifications differ from the author's starting point:
 
 ---
 
+
+Features:
+- task list manager with edit, delete, due date.
+- responsive 
+- Vuex Store with State, Mutations, Actions & Getters
+
+
+
+
 - List Components umgreschrieben.
-- Dialogs wurde umgreschrieben.
+- Dialogs / logic in dialogs "delete task" und "edit task" wurde selber geschrieben.
