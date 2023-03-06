@@ -1,10 +1,10 @@
 <template>
-  <v-row>
     <v-text-field
-      class="py-4 mx-6 my-4"
+    class="ma-3"
       label="Add task"
       variant="outlined"
       clearable
+      dense
       hide-details="true"
       v-model="newTaskTitle"
       @click:appendInner="addTask"
@@ -19,7 +19,7 @@
       </template>
     </v-text-field>
    
-  </v-row>
+  
 </template>
 
 <script setup>
