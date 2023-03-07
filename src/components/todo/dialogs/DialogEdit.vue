@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialogActive" persistent width="auto" >
     <template v-slot:activator="vars" >
-      <!-- <v-btn color="primary" v-bind="vars.props">
+      <!-- <v-btn color="primary" v-bind="vars.props"> //TODO: delete this @critical
         Open Dialog
       </v-btn>
       <v-btn color="primary" v-on:click="vars.props.onClick($event)">
@@ -42,7 +42,7 @@
               color="red-darken-1"
               variant="outlined"
               size="small"
-              :disabled="taskTitleInvalid"
+              :disabled="taskTitleInvalid && ( copiedTask.done === task.done )"
               @click="closeDialog('save')"
             >
               Save
