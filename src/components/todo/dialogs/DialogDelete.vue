@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialogActive" persistent width="auto">
+  <v-dialog v-model="dialogActiveEditable" persistent width="auto">
     <template v-slot:activator="vars" >
       <!-- <v-btn color="primary" v-bind="vars.props">
         Open Dialog
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps(['dialog-active']); // v-model for dialog (dialogActive)
 const emit = defineEmits({
@@ -36,13 +36,14 @@ const emit = defineEmits({
     return true; //validation pass
   }
 });
-  
 
-//const  dialogActive2  = ref(props.dialogActive);
+// dialogActiveEditable is only necessary to make v-model for dialog editable. Necessary on escape keypress
+const dialogActiveEditable = ref(props.dialogActive);
+const watchDialogActive = watch( () => props.dialogActive, () => {
+  dialogActiveEditable.value = props.dialogActive
+});
 
 const closeDialog = ( deleteNoOrYes ) => {
-//  dialogActive2.value = false
   emit('dialogActionYesOrNo', deleteNoOrYes);
 }
-
 </script>

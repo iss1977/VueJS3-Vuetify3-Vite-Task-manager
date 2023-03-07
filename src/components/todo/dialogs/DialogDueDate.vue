@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialogActive" width="auto">
+  <v-dialog v-model="dialogActiveEditable" persistent  width="auto">
     <v-card>
       <v-card-text>
 
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
@@ -38,6 +38,12 @@ const emit = defineEmits({
 });
 
 const props = defineProps(['dialog-active', 'date-to-edit']);
+
+// dialogActiveEditable is only necessary to make v-model for dialog editable. Necessary on escape keypress
+const dialogActiveEditable = ref(props.dialogActive);
+const watchDialogActive = watch( () => props.dialogActive, () => {
+  dialogActiveEditable.value = props.dialogActive
+});
 
 // "props.dateToEdit" is local time as string. Ex: 2022-03-18T10:11:22
 // transform recieved date, trimming the time from DateTime. Show today as preselected date if not set.

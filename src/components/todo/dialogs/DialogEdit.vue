@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialogActive" persistent width="auto" >
+    <v-dialog v-model="dialogActiveEditable" width="auto" persistent no-click-animation>
     <template v-slot:activator="vars" >
       <!-- <v-btn color="primary" v-bind="vars.props"> //TODO: delete this @critical
         Open Dialog
@@ -9,7 +9,7 @@
       </v-btn> -->
     </template>
 
-        <v-card class="pa-4" min-width="300">
+        <v-card class="pa-4" min-width="300" @keydown.esc="keyEscape($event)">
           <v-card-item>
             <v-card-title class="text-h5">
               Edit Task
@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
+import { reactive, ref, computed, watch, onMounted } from 'vue';
 
 const props = defineProps(['dialog-active', 'task']);
 const emit = defineEmits({
@@ -64,6 +64,13 @@ const emit = defineEmits({
   }
 });
 
+// dialogActiveEditable is only necessary to make v-model for dialog editable. Necessary on escape keypress
+const dialogActiveEditable = ref(props.dialogActive);
+const watchDialogActive = watch( () => props.dialogActive, (newValue, oldValue ) => {
+  dialogActiveEditable.value = props.dialogActive
+});
+
+
 const copiedTask = reactive(Object.assign({}, props.task));
 
 const taskTitleInvalid = computed( () => !copiedTask.title || copiedTask.title === props.task.title);
@@ -71,5 +78,4 @@ const taskTitleInvalid = computed( () => !copiedTask.title || copiedTask.title =
 const closeDialog = ( saveOrCancel ) => {
   emit('dialogActionSaveOrNot', saveOrCancel, copiedTask);
 }
-
 </script>

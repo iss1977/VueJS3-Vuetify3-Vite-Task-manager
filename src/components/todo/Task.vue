@@ -10,8 +10,10 @@
 
     <template v-slot:append >
       <span @click.stop class="d-flex align-center">
-        <v-icon  icon="mdi-playlist-edit" v-if="task.dueDate"  class="mr-2 text-grey-darken-3 " size="small"></v-icon>
-        <span class="text-caption text-grey-darken-3" > {{ dateFormated }}</span>
+        <span @click="dialogs.dueDate = true">
+          <v-icon  icon="mdi-calendar-alert" v-if="task.dueDate"  class="mr-2 text-grey-darken-3 " size="xs-small"></v-icon>
+          <span class="text-caption text-grey-darken-3" > {{ dateFormated }}</span>
+        </span>
         <TaskMenu
           v-bind:task="task"
           v-on:deleteTask="dialogs.delete = true"
@@ -46,7 +48,6 @@ const props = defineProps(['task']);
 const task = props.task
 
 const dateFormated = computed( () => task.dueDate ? format(parseISO(task.dueDate), "dd-MM-yyyy") : null);
-console.log(dateFormated.value);
 
 // store actions
 const deleteTask = (id) => {

@@ -28,8 +28,7 @@
         <v-app-bar-title class="mx-2">Todo App</v-app-bar-title>
       </template>
 
-      <template #default="props">
-        <pre>{{ props }}</pre>
+      <template #default>
         <div>
           <v-btn icon @click="showSearchBar = !showSearchBar">
             <v-icon>mdi-magnify</v-icon>
@@ -53,6 +52,7 @@
                 prepend-inner-icon="mdi-magnify"
                 label="search for a task"
                 variant="underlined"
+                density="compact"
                 clearable
                 hide-details
               ></v-text-field>
@@ -60,14 +60,7 @@
           </v-row>
         </v-container>
       </template>
-
-      <!-- <v-app-bar-title>Todo App</v-app-bar-title> -->
-
-
-
-
     </v-app-bar>
-
 
     <v-main>
       <router-view></router-view>
@@ -99,11 +92,10 @@ const showSearchBar = ref(false)
 
 <style lang="scss" scoped>
 .v-container{
-  transition: all .8s;
+  transition: all .3s;
   &.hidden{
       // transform: translateY(100px);
       opacity: 0;
-      scale: 0;
     }
 
 }

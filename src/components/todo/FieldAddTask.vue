@@ -4,7 +4,7 @@
       label="Add task"
       variant="outlined"
       clearable
-      dense
+      density="compact"
       hide-details="true"
       v-model="newTaskTitle"
       @click:appendInner="addTask"
