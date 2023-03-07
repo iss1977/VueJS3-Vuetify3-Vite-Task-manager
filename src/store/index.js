@@ -7,17 +7,20 @@ export const store = createStore({
       {
         id: 1,
         title: "Wake up",
-        done: false
+        done: false,
+        dueDate: '2022-03-15T12:10:52',
       },
       {
         id: 2,
         title: "Eat",
-        done: true
+        done: true,
+        dueDate: '2022-03-18T10:11:22',
       },
       {
         id: 3,
         title: "Go to sleep",
-        done: false
+        done: false,
+        dueDate: null,
       },
     ],
     snackbar: {
@@ -34,6 +37,7 @@ export const store = createStore({
         id: Date.now(),
         title: newTaskTitle,
         done: false,
+        dueDate: null,
       }
       state.tasks.push(newTask);
     },
@@ -48,6 +52,12 @@ export const store = createStore({
       const found = state.tasks.find( (el) => el.id === id);
       if (found){
         found.done = done;
+      }
+    },
+    setDueDateOfTask(state, {id, localeDateLikeISOString}) {
+      const found = state.tasks.find( (el) => el.id === id);
+      if (found){
+        found.dueDate = localeDateLikeISOString;
       }
     },
     // Snackbar
@@ -79,7 +89,11 @@ export const store = createStore({
     },
     hideSnackbar( {commit} ){
       commit('hideSnackbar');
-    }
+    },
+    setDueDateOfTask( { commit }, {id, localeDateLikeISOString}) {
+      commit('setDueDateOfTask', {id, localeDateLikeISOString})
+      commit('showSnackbar', `Task due Date updated.`)
+    },
 
   },
 
@@ -89,7 +103,7 @@ export const store = createStore({
     },
     snackbarTimeout(state){
       return state.snackbar.timeout
-    }
+    },
   }
 })
 

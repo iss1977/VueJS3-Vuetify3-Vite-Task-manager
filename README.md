@@ -16,10 +16,11 @@ Following modifications differ from the author's starting point:
 
 Features:
 - task list manager with edit, delete, due date.
+- modals for editing and conmfirming task feleting
+- 
 - responsive 
 - Vuex Store with State, Mutations, Actions & Getters
-
-
+- integrate calendar control (https://vue3datepicker.com/) and business logic. Vuetify3 has no calendar component.
 
 
 - List Components umgreschrieben.

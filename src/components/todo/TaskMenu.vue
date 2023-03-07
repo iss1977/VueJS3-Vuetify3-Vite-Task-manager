@@ -35,18 +35,20 @@ const props = defineProps(['task']);
 const task = props.task;
 const emit = defineEmits({
   deleteTask(){
-    console.log('emit delete task')
     return true; //validation pass
   },
   editTask(){
-    console.log('emit edit  task')
     return true; //validation pass
   },
+  editDueDate(){
+    console.log('emit edit  due date')
+    return true
+  }
 })
 
 const items = [
         { title: 'Edit', icon: 'mdi-playlist-edit', click: () => emit('editTask') },
-        { title: 'Due date', icon: 'mdi-clipboard-text-clock-outline', click: () => console.log('Date') },
+        { title: 'Due date', icon: 'mdi-clipboard-text-clock-outline',click: () => emit('editDueDate') },
         { title: 'Delete', icon: 'mdi-delete', click: () =>  emit('deleteTask') },
       ]
 
