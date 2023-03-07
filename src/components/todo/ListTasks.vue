@@ -17,7 +17,7 @@ import NoTasks from '@/components/todo/NoTasks.vue'
 
 const store = useStore();
 
-const tasks = computed(() => store.state.tasks);
+const tasks = computed(() => store.getters.tasksFiltered);
 
 
 

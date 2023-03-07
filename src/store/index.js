@@ -3,6 +3,8 @@ import { createStore } from 'vuex'
 // Create a new store instance.
 export const store = createStore({
   state: {
+    searchTerm: null,
+
     tasks: [
       {
         id: 1,
@@ -60,6 +62,9 @@ export const store = createStore({
         found.dueDate = localeDateLikeISOString;
       }
     },
+    updateSearchTerm(state, searchTerm) {
+      state.searchTerm = searchTerm
+    },
     // Snackbar
     showSnackbar(state, message){
       state.snackbar.text = message;
@@ -94,10 +99,19 @@ export const store = createStore({
       commit('setDueDateOfTask', {id, localeDateLikeISOString})
       commit('showSnackbar', `Task due Date updated.`)
     },
+    updateSearchTerm( { commit }, searchTerm ) {
+      commit('updateSearchTerm', searchTerm)
+    }
 
   },
 
   getters: {
+    tasksFiltered(state){
+      if (!state.searchTerm)
+        return state.tasks
+      
+      return state.tasks.filter( task => task.title.toLowerCase().includes(state.searchTerm.toLowerCase()) )
+    },
     snackbarText(state){
       return state.snackbar.text
     },

@@ -30,7 +30,7 @@
 
       <template #default>
         <div>
-          <v-btn icon @click="showSearchBar = !showSearchBar">
+          <v-btn icon @click="showHideSearchBar(!showSearchBar)">
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
 
@@ -48,14 +48,7 @@
               lg="6"
               class="mx-6"
             >
-              <v-text-field
-                prepend-inner-icon="mdi-magnify"
-                label="search for a task"
-                variant="underlined"
-                density="compact"
-                clearable
-                hide-details
-              ></v-text-field>
+              <SearchTask />
             </v-col>
           </v-row>
         </v-container>
@@ -71,22 +64,26 @@
 
 <script setup>
 import Snackbar from '@/components/shared/Snackbar.vue';
-
-
+import SearchTask from '@/components/tools/SearchTask.vue';
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 
 const drawer = ref(false);
+const store = useStore();
 
 const items = [
   { title: 'Todo', icon: 'mdi-checkbox-marked-circle-plus-outline', to: '/' },
   { title: 'About', icon: 'mdi-information-variant', to: '/about' },
-
 ];
 
 const updateFocus = (e) => showSearchBar.value = e;
 
 const showSearchBar = ref(false)
 
+const showHideSearchBar = (showHide) => {
+  store.state.searchTerm='';
+  showSearchBar.value = showHide;
+}
 
 </script>
 
