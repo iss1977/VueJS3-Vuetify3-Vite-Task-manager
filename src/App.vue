@@ -25,7 +25,7 @@
 
       <template v-slot:prepend>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-app-bar-title class="mx-2">Todo App</v-app-bar-title>
+        <v-app-bar-title class="mx-2">{{ appTitle }}</v-app-bar-title>
       </template>
 
       <template #default>
@@ -83,6 +83,8 @@ const items = [
 const updateFocus = (e) => showSearchBar.value = e;
 
 const showSearchBar = ref(true)
+
+const appTitle = store.getters.getAppTitle
 
 const showHideSearchBar = (showHide) => {
   store.state.searchTerm = '';

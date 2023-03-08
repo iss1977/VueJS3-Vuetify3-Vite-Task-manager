@@ -19,6 +19,16 @@ const router = createRouter({
       component: () => import('../views/About.vue')
     },
    ]
-})
+});
+
+router.beforeEach((to, from) => {
+  document.title = `${import.meta.env.VITE_APP_TITLE} - ${capitalize(to.name)}`
+  return true
+});
+
+const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 export default router

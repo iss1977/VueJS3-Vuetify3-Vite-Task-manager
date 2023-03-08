@@ -3,6 +3,8 @@ import { createStore } from 'vuex'
 // Create a new store instance.
 export const store = createStore({
   state: {
+    appTitle: import.meta.env.VITE_APP_TITLE,
+
     searchTerm: null,
 
     tasks: [
@@ -118,6 +120,9 @@ export const store = createStore({
     snackbarTimeout(state){
       return state.snackbar.timeout
     },
+    getAppTitle(state){
+      return state.appTitle
+    }
   }
 })
 
