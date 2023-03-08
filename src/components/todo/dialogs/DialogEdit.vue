@@ -59,7 +59,6 @@ import { reactive, ref, computed, watch, onMounted } from 'vue';
 const props = defineProps(['dialog-active', 'task']);
 const emit = defineEmits({
   dialogActionSaveOrNot(payload){
-    console.log('payload', payload)
     return true; //validation pass
   }
 });

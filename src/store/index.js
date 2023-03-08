@@ -32,6 +32,7 @@ export const store = createStore({
       text: '',
       timeout: 3000,
     },
+    sorting: false,
   },
   mutations: {
     addTask ( state, newTaskTitle)  {
@@ -67,6 +68,9 @@ export const store = createStore({
     updateSearchTerm(state, searchTerm) {
       state.searchTerm = searchTerm
     },
+    isSorting(state, value){
+      state.sorting = value
+    },
     // Snackbar
     showSnackbar(state, message){
       state.snackbar.text = message;
@@ -75,7 +79,10 @@ export const store = createStore({
     },
     hideSnackbar(state){
       state.snackbar.show = false;
-    }
+    },
+    setTasks(state, newTasks) {
+      state.tasks = newTasks
+    },
     
   },
   actions: {
@@ -103,8 +110,10 @@ export const store = createStore({
     },
     updateSearchTerm( { commit }, searchTerm ) {
       commit('updateSearchTerm', searchTerm)
-    }
-
+    },
+    setTasks( { commit }, newTasks ){
+      commit('setTasks', newTasks)
+    },
   },
 
   getters: {
