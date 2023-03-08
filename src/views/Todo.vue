@@ -3,9 +3,15 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import FieldAddTask from '@/components/todo/FieldAddTask.vue';
 import ListTasks from '@/components/todo/ListTasks.vue';
+import ButtonDoneSorting from '@/components/todo/ButtonDoneSorting.vue';
 
 const store = useStore();
 const tasks = computed(() => store.state.tasks);
+const isSorting = computed( () => store.state.sorting);
+
+const doneSorting = () => {
+  store.commit('isSorting', false);
+}
 
 </script>
 
@@ -23,6 +29,19 @@ const tasks = computed(() => store.state.tasks);
         No tasks
       </div>
     </div>
-
+  <ButtonDoneSorting 
+    class="button-done-sorting"
+    @click="doneSorting"
+    v-if="isSorting"
+  />
   </div>
 </template>
+
+<style>
+  .button-done-sorting{
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%,0)
+  }
+</style>

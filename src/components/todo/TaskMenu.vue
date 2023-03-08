@@ -30,6 +30,8 @@
 </template>
 
 <script setup>
+import { store } from '../../store';
+
 
 const props = defineProps(['task']);
 const task = props.task;
@@ -41,15 +43,18 @@ const emit = defineEmits({
     return true; //validation pass
   },
   editDueDate(){
-    console.log('emit edit  due date')
     return true
-  }
-})
+  },
+ })
 
 const items = [
         { title: 'Edit', icon: 'mdi-playlist-edit', click: () => emit('editTask') },
         { title: 'Due date', icon: 'mdi-clipboard-text-clock-outline',click: () => emit('editDueDate') },
         { title: 'Delete', icon: 'mdi-delete', click: () =>  emit('deleteTask') },
+        { title: 'Sort', icon: 'mdi-sort', click: () => sortTasks() },
       ]
 
+const  sortTasks = () => {
+    store.commit('isSorting', true)
+  }
 </script>

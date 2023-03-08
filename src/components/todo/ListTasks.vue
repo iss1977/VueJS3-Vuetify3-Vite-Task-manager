@@ -1,8 +1,15 @@
 <template>
-  <v-list select-strategy="multiple" class="pt-0" v-if="tasks.length">
-    <Task 
-      v-for="(task, i) in tasks" :task="task" :key="task.id"
-    />
+  <v-list select-strategy="multiple" class="pt-0" v-if="tasks.length" >
+    <draggable
+        v-model="tasks"
+        handle=".handle"
+        itemKey="id"
+        @change="hello($event)"
+      >
+      <template #item="{ element, index }">
+      <Task :task="element" :key="element.id"/>
+    </template>
+    </draggable>
   </v-list>
   <NoTasks 
     v-else class="text-center my-6"
@@ -14,11 +21,34 @@ import { useStore } from 'vuex';
 import { computed } from 'vue';
 import Task from '@/components/todo/Task.vue'
 import NoTasks from '@/components/todo/NoTasks.vue'
+import draggable from "vuedraggable";
 
 const store = useStore();
 
-const tasks = computed(() => store.getters.tasksFiltered);
+//const tasks = computed(() => store.getters.tasksFiltered); // also working without a setter in computed
+
+const tasks = computed({
+  get() {
+    return store.getters.tasksFiltered
+  },
+  set(newValue) {
+    store.dispatch('setTasks', newValue)
+  }
+});
 
 
+
+
+console.log(tasks.value)
+tasks.value[0].title='new title';
+console.log(tasks.value)
+
+const hello = (event) => console.log('hello', event)
 
 </script>
+
+<style>
+  .sortable-ghost[data-draggable="true"] > *{
+    box-shadow: 0 0 10px rgba(0,0,0,.3);
+  }
+</style>

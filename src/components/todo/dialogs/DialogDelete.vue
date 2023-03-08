@@ -32,7 +32,6 @@ import { ref, watch } from 'vue';
 const props = defineProps(['dialog-active']); // v-model for dialog (dialogActive)
 const emit = defineEmits({
   dialogActionYesOrNo(payload){
-    console.log('payload', payload)
     return true; //validation pass
   }
 });
