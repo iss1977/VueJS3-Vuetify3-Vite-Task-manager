@@ -10,7 +10,9 @@
   "dependencies": {
     "@vuepic/vue-datepicker": "^4.2.0",
     "date-fns": "^2.29.3",
+    "localforage": "^1.10.0",
     "sass": "^1.58.3",
+    "uuid": "^9.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vuedraggable": "^4.1.0",

@@ -69,7 +69,7 @@ import Snackbar from '@/components/shared/Snackbar.vue';
 import SearchTask from '@/components/tools/SearchTask.vue';
 import LiveDateTime from '@/components/tools/LiveDateTime.vue';
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 const drawer = ref(false);
@@ -90,6 +90,10 @@ const showHideSearchBar = (showHide) => {
   store.state.searchTerm = '';
   showSearchBar.value = showHide;
 }
+
+onMounted(() => {
+  store.dispatch('getTasks')
+})
 
 </script>
 

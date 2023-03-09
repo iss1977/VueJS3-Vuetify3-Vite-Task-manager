@@ -1,4 +1,7 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import { v4 as uuidv4 } from 'uuid';
+import * as localforge from './localforage';
+
 
 // Create a new store instance.
 export const store = createStore({
@@ -35,15 +38,9 @@ export const store = createStore({
     sorting: false,
   },
   mutations: {
-    addTask ( state, newTaskTitle)  {
-      if (!newTaskTitle) return;
+    addTask ( state, newTask)  {
+      if (!newTask) return;
     
-      const newTask = {
-        id: Date.now(),
-        title: newTaskTitle,
-        done: false,
-        dueDate: null,
-      }
       state.tasks.push(newTask);
     },
     saveTask(state, newTask){
@@ -86,9 +83,24 @@ export const store = createStore({
     
   },
   actions: {
-    addTask ({ commit }, newTitle)  {
-      commit('addTask', newTitle);
-      commit('showSnackbar', `Task \"${ newTitle }\" added.`)
+    async addTask ({ commit }, newTitle)  {
+      
+      const newTask = {
+        id: uuidv4(),
+        title: newTitle,
+        done: false,
+        dueDate: null,
+      }
+
+      try {
+        await localforge.addTask(newTask)
+        console.log('saved!')
+        commit('addTask', newTitle);
+        commit('showSnackbar', `Task \"${ newTitle }\" added.`)
+      } catch (error) {
+        console.log(error)
+      }
+
     },
     saveTask( { commit }, newTask){
       commit('saveTask', newTask);
@@ -114,6 +126,9 @@ export const store = createStore({
     setTasks( { commit }, newTasks ){
       commit('setTasks', newTasks)
     },
+    getTasks( { commit }){
+      
+    }
   },
 
   getters: {
@@ -122,6 +137,9 @@ export const store = createStore({
         return state.tasks
       
       return state.tasks.filter( task => task.title.toLowerCase().includes(state.searchTerm.toLowerCase()) )
+    },
+    numberOfTasks(state){
+      return state.tasks.length
     },
     snackbarText(state){
       return state.snackbar.text
