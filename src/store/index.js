@@ -107,8 +107,10 @@ export const store = createStore({
     },
 
     deleteTask({ commit }, id) {
-      commit('deleteTask', id)
-      commit('showSnackbar', `Task deleted.`)
+      localforage.deleteTask(id).then( () => {
+        commit('deleteTask', id)
+        commit('showSnackbar', `Task deleted.`)
+      })
     },
 
     doneTask({ commit }, { id, done }) {
@@ -124,8 +126,10 @@ export const store = createStore({
     },
 
     setDueDateOfTask({ commit }, { id, localeDateLikeISOString }) {
-      commit('setDueDateOfTask', { id, localeDateLikeISOString })
-      commit('showSnackbar', `Task due Date updated.`)
+      localforage.setDueDateOfTask(id, localeDateLikeISOString).then( () => {
+        commit('setDueDateOfTask', { id, localeDateLikeISOString })
+        commit('showSnackbar', `Task due Date updated.`)
+      });
     },
 
     updateSearchTerm({ commit }, searchTerm) {

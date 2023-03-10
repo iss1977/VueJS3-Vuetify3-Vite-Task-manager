@@ -4,28 +4,24 @@ This is a learn path starting from Danny Connell's Vuetify2 and Vue JS 2 Udemy C
 
 Following modifications differ from the author's starting point:
 
-| Description|Tutorial|own Code|
+| Description|Tutorial|This Code|
 | ------------- |:-------------:|:-----:|
 |Build tool|Vue CLI|**Vite**|
 |Vue JS|v2|**v3**|
 |Vuetify|v2|**v3**|
 |APIs|Options Api|Composition API|
-|IndexDB integration|Localbase|localForge|
+|IndexDB integration|Localbase|localForage|
 
 ---
 
 
 Features:
 - task list manager with edit, delete, due date.
-- modals for editing and conmfirming task feleting
-- 
-- responsive 
+- modals for editing and confirming task deleting. Calendar integration https://vue3datepicker.com/
+- Task order sorting
+- Searching for tasks
+- Responsive design
 - Vuex Store with State, Mutations, Actions & Getters
-- integrate calendar control (https://vue3datepicker.com/) and business logic. Vuetify3 has no calendar component.
 - integrate enviroment variables
 - integrate Vue Draggable
-
-
-
-- List Components umgreschrieben.
-- Dialogs / logic in dialogs "delete task" und "edit task" wurde selber geschrieben.
+- integration of of localForage (IndexDB)

@@ -69,3 +69,12 @@ export async function setAllTasks(tasks, clear){
 
 }
 
+export function deleteTask(id){
+  return localforage.removeItem(id)
+}
+
+export async function setDueDateOfTask(id, localeDateLikeISOString){
+   const task = await localforage.getItem(id)
+   task.dueDate = localeDateLikeISOString;
+   await localforage.setItem(id, task);
+}
