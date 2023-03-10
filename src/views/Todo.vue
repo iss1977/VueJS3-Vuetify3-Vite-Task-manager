@@ -6,7 +6,7 @@ import ListTasks from '@/components/todo/ListTasks.vue';
 import ButtonDoneSorting from '@/components/todo/ButtonDoneSorting.vue';
 
 const store = useStore();
-const tasks = computed(() => store.state.tasks);
+const numberOfTasks = computed( () => store.getters.numberOfTasks)
 const isSorting = computed( () => store.state.sorting);
 
 const doneSorting = () => {
@@ -20,7 +20,7 @@ const doneSorting = () => {
    
     <FieldAddTask />
 
-    <ListTasks v-if="tasks.length"/>
+    <ListTasks v-if="numberOfTasks"/>
     <div v-else class="text-center my-6">
       <v-icon size="x-large" color="primary">
         mdi-email

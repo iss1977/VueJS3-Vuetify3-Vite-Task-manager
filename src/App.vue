@@ -1,5 +1,6 @@
 <template>
-  <v-app id="inspire">
+  <v-responsive max-width="1200px" class="mx-auto">
+  <v-app id="inspire" class="mx-auto">
     <v-navigation-drawer v-model="drawer">
       <v-list-item prepend-avatar="https://picsum.photos/200" title="Todo" subtitle="forever free" nav>
         <template v-slot:append>
@@ -62,6 +63,7 @@
     </v-main>
     <Snackbar />
   </v-app>
+</v-responsive>
 </template>
 
 <script setup>
@@ -69,7 +71,7 @@ import Snackbar from '@/components/shared/Snackbar.vue';
 import SearchTask from '@/components/tools/SearchTask.vue';
 import LiveDateTime from '@/components/tools/LiveDateTime.vue';
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 const drawer = ref(false);
@@ -90,6 +92,10 @@ const showHideSearchBar = (showHide) => {
   store.state.searchTerm = '';
   showSearchBar.value = showHide;
 }
+
+onMounted(() => {
+  store.dispatch('getTasks')
+})
 
 </script>
 
