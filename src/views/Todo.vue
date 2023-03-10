@@ -6,7 +6,7 @@ import ListTasks from '@/components/todo/ListTasks.vue';
 import ButtonDoneSorting from '@/components/todo/ButtonDoneSorting.vue';
 
 const store = useStore();
-const numberOfTasks = store.getters.numberOfTasks
+const numberOfTasks = computed( () => store.getters.numberOfTasks)
 const isSorting = computed( () => store.state.sorting);
 
 const doneSorting = () => {

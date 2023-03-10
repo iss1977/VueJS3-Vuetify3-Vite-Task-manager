@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
-import * as localforge from './localforage';
+import * as localforage from './localforage';
 
 
 // Create a new store instance.
@@ -10,26 +10,8 @@ export const store = createStore({
 
     searchTerm: null,
 
-    tasks: [
-      {
-        id: 1,
-        title: "Wake up",
-        done: false,
-        dueDate: '2022-03-15T12:10:52',
-      },
-      {
-        id: 2,
-        title: "Eat",
-        done: true,
-        dueDate: '2022-03-18T10:11:22',
-      },
-      {
-        id: 3,
-        title: "Go to sleep",
-        done: false,
-        dueDate: null,
-      },
-    ],
+    tasks: [],
+
     snackbar: {
       show: false,
       text: '',
@@ -37,119 +19,163 @@ export const store = createStore({
     },
     sorting: false,
   },
+  /**
+   * MUTATIONS
+   */
   mutations: {
-    addTask ( state, newTask)  {
+    addTask(state, newTask) {
       if (!newTask) return;
-    
+      console.log('Executing addTask mutation with newTask:', newTask)
       state.tasks.push(newTask);
     },
-    saveTask(state, newTask){
-      const task =  state.tasks.filter( (task) => task.id === newTask.id)[0];
-      Object.assign(task,newTask);
+    saveTask(state, newTask) {
+      const task = state.tasks.filter((task) => task.id === newTask.id)[0];
+      Object.assign(task, newTask);
     },
     deleteTask(state, id) {
-      state.tasks = state.tasks.filter( (task) => task.id !== id)
+      state.tasks = state.tasks.filter((task) => task.id !== id)
     },
-    doneTask(state,{id,done}){
-      const found = state.tasks.find( (el) => el.id === id);
-      if (found){
+    doneTask(state, { id, done }) {
+      const found = state.tasks.find((el) => el.id === id);
+      if (found) {
         found.done = done;
       }
     },
-    setDueDateOfTask(state, {id, localeDateLikeISOString}) {
-      const found = state.tasks.find( (el) => el.id === id);
-      if (found){
+    setDueDateOfTask(state, { id, localeDateLikeISOString }) {
+      const found = state.tasks.find((el) => el.id === id);
+      if (found) {
         found.dueDate = localeDateLikeISOString;
       }
     },
     updateSearchTerm(state, searchTerm) {
       state.searchTerm = searchTerm
     },
-    isSorting(state, value){
+    isSorting(state, value) {
       state.sorting = value
     },
     // Snackbar
-    showSnackbar(state, message){
+    showSnackbar(state, message) {
       state.snackbar.text = message;
       state.snackbar.show = true;
-      state.snackbar.timeout= state.snackbar.timeout+1; // reset timer
+      state.snackbar.timeout = state.snackbar.timeout + 1; // reset timer
     },
-    hideSnackbar(state){
+    hideSnackbar(state) {
       state.snackbar.show = false;
     },
     setTasks(state, newTasks) {
+      console.log('New tasks:', newTasks)
       state.tasks = newTasks
     },
-    
+
+    reorderTaskList(state, reorderInformation) {
+      [state.tasks[reorderInformation.oldTaskIndex].order, state.tasks[reorderInformation.newTaskIndex].order] = [state.tasks[reorderInformation.newTaskIndex].order, state.tasks[reorderInformation.oldTaskIndex].order]
+    },
+
+    sortTasks( state ){
+      orderTasks(state.tasks).then( ( tasks ) => state.tasks =tasks )
+    }
   },
+
+  /**
+   * ACTIONS
+   */
   actions: {
-    async addTask ({ commit }, newTitle)  {
-      
+    async addTask({ commit, getters }, newTitle) {
+      console.log('Vuex action add task. New title is ', newTitle)
       const newTask = {
         id: uuidv4(),
+        order: getters.numberOfTasks,
         title: newTitle,
         done: false,
         dueDate: null,
       }
 
       try {
-        await localforge.addTask(newTask)
-        console.log('saved!')
-        commit('addTask', newTitle);
-        commit('showSnackbar', `Task \"${ newTitle }\" added.`)
+        await localforage.addTask(newTask)
+        commit('addTask', newTask);
+        console.log('Sending to commit new task: ', newTask)
+        commit('showSnackbar', `Task \"${newTitle}\" added.`)
       } catch (error) {
         console.log(error)
       }
 
     },
-    saveTask( { commit }, newTask){
+
+    saveTask({ commit }, newTask) {
       commit('saveTask', newTask);
-      commit('showSnackbar', `Task \"${ newTask.title }\" saved.`)
+      commit('showSnackbar', `Task \"${newTask.title}\" saved.`)
     },
+
     deleteTask({ commit }, id) {
       commit('deleteTask', id)
       commit('showSnackbar', `Task deleted.`)
     },
-    doneTask( { commit }, { id, done }){
-      commit( 'doneTask', {id, done} )
+
+    doneTask({ commit }, { id, done }) {
+      localforage.setTaskDone(id, done).then(() => {
+        commit('doneTask', { id, done })
+      }).catch((error) => {
+        console.log(error)
+      })
     },
-    hideSnackbar( {commit} ){
+
+    hideSnackbar({ commit }) {
       commit('hideSnackbar');
     },
-    setDueDateOfTask( { commit }, {id, localeDateLikeISOString}) {
-      commit('setDueDateOfTask', {id, localeDateLikeISOString})
+
+    setDueDateOfTask({ commit }, { id, localeDateLikeISOString }) {
+      commit('setDueDateOfTask', { id, localeDateLikeISOString })
       commit('showSnackbar', `Task due Date updated.`)
     },
-    updateSearchTerm( { commit }, searchTerm ) {
+
+    updateSearchTerm({ commit }, searchTerm) {
       commit('updateSearchTerm', searchTerm)
     },
-    setTasks( { commit }, newTasks ){
+
+    setTasks({ commit }, newTasks) {
       commit('setTasks', newTasks)
     },
-    getTasks( { commit }){
-      
+
+    getTasks({ commit }) {
+      localforage.getAllTasks().then( (tasks) => orderTasks(tasks)).then((tasks) => commit('setTasks', tasks));
+    },
+
+    reorderTaskList({ state, commit }, reorderInformation) {
+      console.log('New reorder information in store actions:', reorderInformation)
+      commit('reorderTaskList', reorderInformation)
+      commit('sortTasks')
+      localforage.setAllTasks(state.tasks, true).then(() => console.log('actions: save done'))
     }
   },
 
+  /**
+   * GETTERS
+   */
+
   getters: {
-    tasksFiltered(state){
+    tasksFiltered(state) {
       if (!state.searchTerm)
         return state.tasks
-      
-      return state.tasks.filter( task => task.title.toLowerCase().includes(state.searchTerm.toLowerCase()) )
+
+      return state.tasks.filter(task => task.title.toLowerCase().includes(state.searchTerm.toLowerCase()))
     },
-    numberOfTasks(state){
+    numberOfTasks(state) {
       return state.tasks.length
     },
-    snackbarText(state){
+    snackbarText(state) {
       return state.snackbar.text
     },
-    snackbarTimeout(state){
+    snackbarTimeout(state) {
       return state.snackbar.timeout
     },
-    getAppTitle(state){
+    getAppTitle(state) {
       return state.appTitle
     }
   }
 })
 
+function orderTasks(tasks){
+  return new Promise( (resolve) => {
+    resolve(tasks.sort( (taskA, taskB) => taskA.order-taskB.order ))
+  })
+}

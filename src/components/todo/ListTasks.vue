@@ -4,7 +4,7 @@
         v-model="tasks"
         handle=".handle"
         itemKey="id"
-        @change="hello($event)"
+        @change="reorderTaskList($event)"
       >
       <template #item="{ element, index }">
       <Task :task="element" :key="element.id"/>
@@ -32,18 +32,19 @@ const tasks = computed({
     return store.getters.tasksFiltered
   },
   set(newValue) {
-    store.dispatch('setTasks', newValue)
+    //console.log('Draggable sets new order in tasks:', newValue)
+    //store.dispatch('setTasks', newValue)
   }
 });
 
-
-
-
-console.log(tasks.value)
-tasks.value[0].title='new title';
-console.log(tasks.value)
-
-const hello = (event) => console.log('hello', event)
+const reorderTaskList = (event) => {
+  const reorderInformation = {
+    movedTaskId: event.moved?.element?.id,
+    oldTaskIndex: event.moved?.oldIndex,
+    newTaskIndex: event.moved?.newIndex
+  }
+  store.dispatch('reorderTaskList', reorderInformation)
+}
 
 </script>
 
