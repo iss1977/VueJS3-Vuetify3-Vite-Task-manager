@@ -1,27 +1,48 @@
-# TaskMan using VueJS 3 and Vuetify 3 with responsive layout
+# Task Manager using VueJS 3, Vuetify 3, IndeyxDB and Vite 
 
-This is a learn path starting from Danny Connell's Vuetify2 and Vue JS 2 Udemy Course.
+This is an update code to a legacy vuetify course from Udemy. Author Danny Connell
 
-Following modifications differ from the author's starting point:
+Following changes were made to the author's source code:
 
-| Description|Tutorial|This Code|
+| Description|Tutorial|This Repository|
 | ------------- |:-------------:|:-----:|
 |Build tool|Vue CLI|**Vite**|
 |Vue JS|v2|**v3**|
 |Vuetify|v2|**v3**|
-|APIs|Options Api|Composition API|
-|IndexDB integration|Localbase|localForage|
+|APIs|Options Api|**Composition API**|
+|IndexDB integration|Localbase|**localForage**|
 
 ---
 
 
-Features:
+## Features:
 - task list manager with edit, delete, due date.
-- modals for editing and confirming task deleting. Calendar integration https://vue3datepicker.com/
-- Task order sorting
+- modal dialogs for editing task, setting due date and confirmation dialog. 
+- snackbar integration
+- <span style='color:#46b83d; font-weight: bold;'> Integration of Vue3 Datepicker Calendar</span>
+- Task order sorting with Vue Draggable.<span style='color:#46b83d; font-weight: bold;'> Sorting with an order data field.</span> 
 - Searching for tasks
 - Responsive design
 - Vuex Store with State, Mutations, Actions & Getters
 - integrate enviroment variables
-- integrate Vue Draggable
-- integration of of localForage (IndexDB)
+- <span style='color:#46b83d; font-weight: bold;'> integration of of localForage (IndexDB) </span>
+- deployment on netlify
+
+Items marked <span style='color:#46b83d; font-weight: bold;'> in green </span> differ significally from original code or are completly own coded.
+
+Live demo [here.](https://vuetify3-tasks.netlify.app/)
+
+---
+
+
+## Installation:
+
+- Clone repository
+- Install dependencies
+```
+npm install
+```
+- Run app
+```
+npm run dev
+```
