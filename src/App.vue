@@ -104,7 +104,6 @@ onMounted(() => {
   transition: all .3s;
 
   &.hidden {
-    // transform: translateY(100px);
     opacity: 0;
   }
 

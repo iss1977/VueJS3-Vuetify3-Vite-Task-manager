@@ -25,7 +25,6 @@ export const store = createStore({
   mutations: {
     addTask(state, newTask) {
       if (!newTask) return;
-      console.log('Executing addTask mutation with newTask:', newTask)
       state.tasks.push(newTask);
     },
     saveTask(state, newTask) {
@@ -63,16 +62,15 @@ export const store = createStore({
       state.snackbar.show = false;
     },
     setTasks(state, newTasks) {
-      console.log('New tasks:', newTasks)
       state.tasks = newTasks
     },
 
     reorderTaskList(state, reorderInformation) {
-      [state.tasks[reorderInformation.oldTaskIndex].order, state.tasks[reorderInformation.newTaskIndex].order] = [state.tasks[reorderInformation.newTaskIndex].order, state.tasks[reorderInformation.oldTaskIndex].order]
+      orderTasksBetweenIndexes(state.tasks, reorderInformation.oldTaskIndex, reorderInformation.newTaskIndex);
     },
 
     sortTasks( state ){
-      orderTasks(state.tasks).then( ( tasks ) => state.tasks =tasks )
+      sortTasksbyOrderField(state.tasks).then( ( tasks ) => state.tasks =tasks )
     }
   },
 
@@ -93,10 +91,9 @@ export const store = createStore({
       try {
         await localforage.addTask(newTask)
         commit('addTask', newTask);
-        console.log('Sending to commit new task: ', newTask)
         commit('showSnackbar', `Task \"${newTitle}\" added.`)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
 
     },
@@ -117,7 +114,7 @@ export const store = createStore({
       localforage.setTaskDone(id, done).then(() => {
         commit('doneTask', { id, done })
       }).catch((error) => {
-        console.log(error)
+        console.error(error)
       })
     },
 
@@ -141,14 +138,13 @@ export const store = createStore({
     },
 
     getTasks({ commit }) {
-      localforage.getAllTasks().then( (tasks) => orderTasks(tasks)).then((tasks) => commit('setTasks', tasks));
+      localforage.getAllTasks().then( (tasks) => sortTasksbyOrderField(tasks)).then((tasks) => commit('setTasks', tasks));
     },
 
     reorderTaskList({ state, commit }, reorderInformation) {
-      console.log('New reorder information in store actions:', reorderInformation)
       commit('reorderTaskList', reorderInformation)
       commit('sortTasks')
-      localforage.setAllTasks(state.tasks, true).then(() => console.log('actions: save done'))
+      localforage.setAllTasks(state.tasks, true)
     }
   },
 
@@ -178,8 +174,25 @@ export const store = createStore({
   }
 })
 
-function orderTasks(tasks){
+function sortTasksbyOrderField(tasks){
   return new Promise( (resolve) => {
     resolve(tasks.sort( (taskA, taskB) => taskA.order-taskB.order ))
   })
+}
+
+// sets the order of tasks after manual sort with draggable by sorting the tasks[].order field between oldIndex and newIndex.
+function orderTasksBetweenIndexes(tasks, oldIndex, newIndex){
+  if ( oldIndex < newIndex ) {
+    const temp = tasks[newIndex].order
+    for (let index = newIndex; index > oldIndex; index--) {
+      tasks[index].order = tasks[index - 1].order
+    }
+    tasks[oldIndex].order = temp
+  } else {
+    const temp = tasks[newIndex].order
+    for (let index = newIndex; index <= oldIndex - 1; index++) {
+      tasks[index].order = tasks[index + 1].order
+    }
+    tasks[oldIndex].order = temp
+  }
 }

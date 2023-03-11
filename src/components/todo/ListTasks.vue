@@ -32,8 +32,7 @@ const tasks = computed({
     return store.getters.tasksFiltered
   },
   set(newValue) {
-    //console.log('Draggable sets new order in tasks:', newValue)
-    //store.dispatch('setTasks', newValue)
+    // will be executed by reorderTaskList function below
   }
 });
 

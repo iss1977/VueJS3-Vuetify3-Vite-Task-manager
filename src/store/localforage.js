@@ -32,14 +32,13 @@ export function getAllTasks() {
     } catch (error) {
       //return Promise.reject('Error accesing data')
       // throw new Error('Can\'t set task properties.')      
-      console.log(`Error reading task id: ${key}, value: ${value}. Data ignored.`)
+      console.error(`Error reading task id: ${key}, value: ${value}. Data ignored.`)
     }
   }).then(function (rez) {
-    console.log('Iteration has completed', rez);
     return tasks
   }).catch(function (err) {
     // This code runs if there were any errors
-    console.log(err);
+    console.error(err);
   });
 }
 
@@ -49,11 +48,9 @@ export async function setTaskDone(id, done) {
 
   storedObject.done = done
 
-  return localforage.setItem(id, storedObject).then(function (value) {
-    // Do other things once the value has been saved.
-    console.log(value);
-  }).catch(function (err) {
-    console.log(err);
+  return localforage.setItem(id, storedObject)
+    .catch(function (err) {
+    console.error(err);
   });
 }
 
@@ -61,7 +58,6 @@ export async function setTaskDone(id, done) {
 export async function setAllTasks(tasks, clear){
   if (clear)
     await localforage.clear()
-  console.log('Writing tasks', tasks)
   return Promise.all( tasks.map( async task => {
     const { id, ...taskData} = task
     await localforage.setItem(task.id, taskData)
