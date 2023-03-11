@@ -19,16 +19,17 @@ Following changes were made to the author's source code:
 - task list manager with edit, delete, due date.
 - modal dialogs for editing task, setting due date and confirmation dialog. 
 - snackbar integration
-- <span style='color:#46b83d; font-weight: bold;'> Integration of Vue3 Datepicker Calendar</span>
-- Task order sorting with Vue Draggable.<span style='color:#46b83d; font-weight: bold;'> Sorting with an order data field.</span> 
+- **Integration of Vue3 Datepicker Calendar**
+- Task order sorting with Vue Draggable. **Sorting with an order data field.**
 - Searching for tasks
 - Responsive design
 - Vuex Store with State, Mutations, Actions & Getters
 - integrate enviroment variables
-- <span style='color:#46b83d; font-weight: bold;'> integration of of localForage (IndexDB) </span>
+- **integration of of localForage (IndexDB)**
 - deployment on netlify
 
-Items marked <span style='color:#46b83d; font-weight: bold;'> in green </span> differ significally from original code or are completly own coded.
+Items marked **BOLD** differ significally from original code or are completly new.
+Other elements will vary slightly.
 
 Live demo [here.](https://vuetify3-tasks.netlify.app/)
 
